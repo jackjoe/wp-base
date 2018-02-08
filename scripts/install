@@ -22,19 +22,26 @@ else
 fi
 
 # Ask & set project slug
-while [ "$SLUG_OK" != "y" ]
+while [ "$SETTINGS_OK" != "y" ]
 do
-	echo -e "\n--> Give a project slug"
-	echo -e "    (keep it short and slug-like or slug_like)"
-	read PROJECT_NAME
+  echo -e ""
+  PROJECT_NAME_DEFAULT="project-x"
+	read -p "--> Project slug [$PROJECT_NAME_DEFAULT]: " PROJECT_NAME
+  PROJECT_NAME="${PROJECT_NAME:-$PROJECT_NAME_DEFAULT}"
 
 	PROJECT_SLUG=$(echo $PROJECT_NAME | tr '[:upper:]' '[:lower:]' | iconv -t ascii//TRANSLIT | sed -E s/[^a-zA-Z0-9]+/-/g | sed -E s/^-+\|-+$//g | tr A-Z a-z)
 
+  PROJECT_URL_DEFAULT="${PROJECT_SLUG}.lcl"
+  # echo -e "\n--> Project url: ($PROJECT_URL_DEFAULT)"
+	read -p "--> Project url [$PROJECT_URL_DEFAULT]: " PROJECT_URL
+  PROJECT_URL="${PROJECT_URL:-$PROJECT_URL_DEFAULT}"
+
 	echo -e "\n--> We'll be using following settings:"
 	echo -e "slug:      ${PROJECT_SLUG}"
+	echo -e "url:       ${PROJECT_URL}"
 
 	echo -e "\nOK? (y)es or (n)o"
-	read SLUG_OK
+	read SETTINGS_OK
 done
 
 # Create project folder and change into it
@@ -72,6 +79,7 @@ sed -i -e "s:{{PROJECT_SLUG}}:${PROJECT_SLUG}:g" ./README.md
 
 echo -e "--> Configure variables in wp-config.php"
 sed -i -e "s:{{PROJECT_SLUG}}:${PROJECT_SLUG}:g" wp-config.php
+sed -i -e "s:{{PROJECT_URL}}:${PROJECT_URL}:g" wp-config.php
 
 echo -e "--> Add salt keys files to wp-config.php\n"
 curl https://api.wordpress.org/secret-key/1.1/salt/ > wp-base-master/wp_salt_keys
@@ -88,7 +96,7 @@ echo -e "--> Rename theme folder to ${PROJECT_SLUG}"
 mv ./wp-content/themes/PROJECT_SLUG ./wp-content/themes/${PROJECT_SLUG}
 
 # Copy default env file
-cp .env.exampe .env
+cp .env.example .env
 
 # Clean up
 echo -e "--> Clean up install files"

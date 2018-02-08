@@ -47,7 +47,7 @@ define('DB_COLLATE', '');
 /**#@-*/
 
 /** WP_HOME is your Blog Address (URL). */
-define('WP_HOME', PROTOCOL . $_SERVER["HTTP_HOST"]);
+define('WP_HOME', {{PROJECT_URL}});
 
 /** Disable theme editor */
 define('DISALLOW_FILE_EDIT', true);
