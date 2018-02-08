@@ -10,6 +10,7 @@
     "php": ">=7.0",
     "johnpbloch/wordpress": "^4.9",
     "timber/timber": "^1.6",
-    "wpackagist-plugin/timber-library": "0.22.*"
+    "wpackagist-plugin/timber-library": "0.22.*",
+    "vlucas/phpdotenv": "^2.4"
   }
 }
