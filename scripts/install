@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
 
-cat << EOF
-_________            ______                 _________                ___       _________
-______  /_____ _________  /__   ______      ______  /__________      __ |     / /__  __ \
-___ _  /_  __ `/  ___/_  //_/   ___/ /_     ___ _  /_  __ \  _ \     __ | /| / /__  /_/ /
-/ /_/ / / /_/ // /__ _  ,<      /_  __/     / /_/ / / /_/ /  __/     __ |/ |/ / _  ____/
-\____/  \__,_/ \___/ /_/|_|      /_/        \____/  \____/\___/      ____/|__/  /_/
-
+cat << 'EOF'
+     __         __       __       __
+ __ / /__ _____/ /__  __/ /_  __ / /__  ___
+/ // / _ `/ __/  '_/ /_  __/ / // / _ \/ -_)
+\___/\_,_/\__/_/\_\   /_/    \___/\___/\__/
 EOF
 
 echo -e "\n--> Checking local dependencies"
@@ -30,7 +28,7 @@ do
 	echo -e "    (keep it short and slug-like or slug_like)"
 	read PROJECT_NAME
 
-	PROJECT_SLUG=$(echo $PROJECT_NAME | tr '[:upper:]' '[:lower:]' | tr -d '[:space:][:punct:]')
+	PROJECT_SLUG=$(echo $PROJECT_NAME | tr '[:upper:]' '[:lower:]' | iconv -t ascii//TRANSLIT | sed -E s/[^a-zA-Z0-9]+/-/g | sed -E s/^-+\|-+$//g | tr A-Z a-z)
 
 	echo -e "\n--> We'll be using following settings:"
 	echo -e "slug:      ${PROJECT_SLUG}"
@@ -38,3 +36,85 @@ do
 	echo -e "\nOK? (y)es or (n)o"
 	read SLUG_OK
 done
+
+# Create project folder and change into it
+echo -e "\n--> Create project folder ${PROJECT_SLUG}"
+mkdir -p "./${PROJECT_SLUG}"
+
+echo -e "--> Change directory to ${PROJECT_SLUG}"
+cd ./${PROJECT_SLUG}
+pwd
+
+TEST=0
+
+# Load template files
+if [[ "$PWD" =~ "wp-base" ]]
+then
+	mkdir -p ./wp-base-master
+	cp -Ri ../template ./wp-base-master/template
+else
+	echo -e "--> Downloading wp-starter files\n"
+	curl -L https://github.com/jackjoe/wp-base/archive/master.zip > wp-base-master.zip
+
+	echo -e "--> Extract files\n"
+	unzip wp-base-master.zip
+	rm wp-base-master.zip
+fi
+
+echo -e "--> Copy template files"
+cp -Ri ./wp-base-master/template/* ./
+cp -Ri ./wp-base-master/template/.[^.]* ./
+
+# Replace variables in the templates files
+echo -e "--> Update README with project details"
+sed -i -e "s:{{PROJECT_NAME}}:${PROJECT_NAME}:g" ./README.md
+sed -i -e "s:{{PROJECT_SLUG}}:${PROJECT_SLUG}:g" ./README.md
+
+echo -e "--> Configure variables in wp-config.php"
+sed -i -e "s:{{PROJECT_SLUG}}:${PROJECT_SLUG}:g" wp-config.php
+
+echo -e "--> Add salt keys files to wp-config.php\n"
+curl https://api.wordpress.org/secret-key/1.1/salt/ > wp-base-master/wp_salt_keys
+
+sed -i -e "/{{WP_SALT_KEYS}}/{
+	s/{{WP_SALT_KEYS}}//g
+	r ./wp-base-master/wp_salt_keys
+}" wp-config.php
+
+echo -e "--> Configure variables in style.css"
+sed -i -e "s:{{PROJECT_NAME}}:${PROJECT_NAME}:g" ./wp-content/themes/PROJECT_SLUG/style.css
+
+echo -e "--> Rename theme folder to ${PROJECT_SLUG}"
+mv ./wp-content/themes/PROJECT_SLUG ./wp-content/themes/${PROJECT_SLUG}
+
+# Clean up
+echo -e "--> Clean up install files"
+rm -r ./wp-base-master
+
+# Run composer
+echo -e "--> Run composer install"
+composer install
+
+# Initialize Git
+echo -e "\nInitialize GIT repo? (y)es or (n)o"
+read GIT_OK
+
+if [[ "${GIT_OK}" == "y" ]]
+then
+	git init
+	git add .
+	git commit -m "Bootstrapped application with wp-base"
+fi
+
+# The end
+echo -e "\n**************************************************"
+echo -e "\n--> That's it! Happy developing :)"
+echo -e "\n--> Things to configure manually:\n"
+echo -e "1. Install Wordpress on production and export DB"
+echo -e "2. Create S3 bucket and add keys to production app via admin panel:"
+echo -e "  http://${PROJECT_SLUG}.p.a.mrhenry.eu/wp/wp-admin/options-general.php?page=wpro"
+echo -e "3. Create development database:"
+echo -e "   wp_${PROJECT_SLUG}_development"
+echo -e "4. Import production DB in development & staging"
+echo -e "5. Add admin credentials to 1Password"
+echo -e "6. Add plugin: Advanced Custom Fields Pro"
