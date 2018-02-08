@@ -51,7 +51,7 @@ TEST=0
 if [[ "$PWD" =~ "wp-base" ]]
 then
 	mkdir -p ./wp-base-master
-	cp -Ri ../template ./wp-base-master/template
+	cp -Ri ../templates ./wp-base-master/templates
 else
 	echo -e "--> Downloading wp-starter files\n"
 	curl -L https://github.com/jackjoe/wp-base/archive/master.zip > wp-base-master.zip
@@ -62,8 +62,8 @@ else
 fi
 
 echo -e "--> Copy template files"
-cp -Ri ./wp-base-master/template/* ./
-cp -Ri ./wp-base-master/template/.[^.]* ./
+cp -Ri ./wp-base-master/templates/* ./
+cp -Ri ./wp-base-master/templates/.[^.]* ./
 
 # Replace variables in the templates files
 echo -e "--> Update README with project details"
@@ -86,6 +86,9 @@ sed -i -e "s:{{PROJECT_NAME}}:${PROJECT_NAME}:g" ./wp-content/themes/PROJECT_SLU
 
 echo -e "--> Rename theme folder to ${PROJECT_SLUG}"
 mv ./wp-content/themes/PROJECT_SLUG ./wp-content/themes/${PROJECT_SLUG}
+
+# Copy default env file
+cp .env.exampe .env
 
 # Clean up
 echo -e "--> Clean up install files"

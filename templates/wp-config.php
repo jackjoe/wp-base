@@ -1,7 +1,7 @@
 <?php
 // dotenv
-require_once(__DIR__ . '/../vendor/autoload.php');
-(new \Dotenv\Dotenv(__DIR__.'/../'))->load();
+require_once(__DIR__ . '/vendor/autoload.php');
+(new \Dotenv\Dotenv(__DIR__))->load();
 
 /**
  * The base configuration for WordPress
