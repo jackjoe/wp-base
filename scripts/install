@@ -19,6 +19,7 @@ cat <<EOF
   Options:
     -h  --help           Show this message
     -s                   Project slug, all lowercase chars, no whitespace, e.g.: project-slug, project_slug [$PROJECT_SLUG]
+    -u                   Project url, including protocol [http://$PROJECT_SLUG.lcl]
 
   Remote usage:
     bash <( curl -s https://raw.githubusercontent.com/jackjoe/wp-base/master/scripts/install  ) [-s 'project-x']
