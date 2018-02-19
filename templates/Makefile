@@ -8,7 +8,7 @@ SHELL       	:= $(shell which bash)
 .SHELLFLAGS 	= -c
 
 WEBPACK_PORT             = 2992
-SLACK_HOOK 		           = 'https://hooks.slack.com/services/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'
+SLACK_HOOK 		           = ''
 SENTRY_TOKEN 	           = ''
 TIMESTAMP 		           = `date +%s`
 BRANCH 				           = $(shell git rev-parse --abbrev-ref HEAD)
