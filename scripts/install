@@ -9,7 +9,7 @@ EOF
 
 # defaults
 PROJECT_SLUG="project-x"
-PROJECT_URL="${PROJECT_SLUG}.lcl"
+PROJECT_URL="http://${PROJECT_SLUG}.lcl"
 WITH_GIT="n"
 
 function _help {
@@ -161,7 +161,7 @@ echo -e "Project url: ${PROJECT_URL}"
 echo -e "\n--> Things to configure manually:\n"
 echo -e "1. Create an entry in your hosts file and setup a vhost on apache"
 echo -e "2. Create S3 bucket and add keys to production app via admin panel:"
-echo -e "  http://${PROJECT_URL}/wp/wp-admin/options-general.php?page=wpro"
+echo -e "  ${PROJECT_URL}/wp/wp-admin/options-general.php?page=wpro"
 echo -e "3. Create development database:"
 echo -e "   ${PROJECT_SLUG}-dev"
 echo -e "4. Add admin credentials to 1Password"
