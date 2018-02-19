@@ -101,6 +101,9 @@ echo -e "--> Configure variables in wp-config.php"
 sed -i '' -e "s:{{PROJECT_SLUG}}:${PROJECT_SLUG}:g" wp-config.php
 sed -i '' -e "s:{{PROJECT_URL}}:${PROJECT_URL}:g" wp-config.php
 
+echo -e "--> Configure Makefile"
+sed -i '' -e "s:{{PROJECT_SLUG}}:${PROJECT_SLUG}:g" Makefile.php
+
 echo -e "--> Add salt keys files to wp-config.php\n"
 curl -s https://api.wordpress.org/secret-key/1.1/salt/ > wp-base-master/wp_salt_keys
 

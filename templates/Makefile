@@ -1,4 +1,4 @@
-PROJECT_NAME  = 'PROJECT_SLUG'
+PROJECT_NAME  = PROJECT_SLUG
 SASS_FOLDER   = 'wp-content/themes/$(PROJECT_NAME)/sass'
 JS_FOLDER     = 'wp-content/themes/$(PROJECT_NAME)/javascript'
 STATIC_FOLDER = 'wp-content/themes/$(PROJECT_NAME)/static'
@@ -32,12 +32,12 @@ Makefile: ;              # skip prerequisite discovery
 sass: ## compile sass
 	echo "sass compile .."
 	node_modules/node-sass/bin/node-sass \
-		-o public/css \
+		-o $(STATIC_FOLDER)/css \
 		--output-style compressed \
 		--source-map true \
 		$(SASS_FOLDER)/style.sass
 	node_modules/postcss-cli/bin/postcss \
-		$(STATIC_FOLDER)/style.css \
+		$(STATIC_FOLDER)/css/style.css \
 		--use autoprefixer \
 		--replace
 
@@ -49,9 +49,9 @@ endif
 sasswatch: ## compile sass
 	echo 'Watching sass...'
 	node_modules/node-sass/bin/node-sass \
-		-w resources/sass \
+		-w $(SASS_FOLDER) \
 		-r \
-		-o public/css \
+		-o $(STATIC_FOLDER)/css \
 		--output-style compressed \
 		--sourcemap true \
 		$(SASS_FOLDER)/style.sass
