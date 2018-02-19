@@ -145,9 +145,9 @@ fi
 
 # The end
 echo -e "\n**************************************************"
-echo -e "\n--> That's it! Happy developing :)\n"
+echo -e "\n--> That's it! Happy developing :)"
 echo -e "\n Project folder: ${PROJECT_SLUG}"
-echo -e "\n Project url: ${PROJECT_URL}"
+echo -e "Project url: ${PROJECT_URL}"
 echo -e "\n--> Things to configure manually:\n"
 echo -e "1. Install Wordpress on production and export DB"
 echo -e "2. Create an entry in your hosts file and setup a vhost on apache"
