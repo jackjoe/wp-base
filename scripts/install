@@ -12,8 +12,6 @@ PROJECT_SLUG="project-x"
 PROJECT_URL="${PROJECT_SLUG}.lcl"
 WITH_GIT="n"
 
-echo -e "\n--> Checking local dependencies"
-
 function _help {
 cat <<EOF
   $*
@@ -48,9 +46,7 @@ while getopts "$OPTSPEC" FLAG; do
   esac
 done
 
-
-
-# Check composer install
+echo -e "\n--> Checking local dependencies"
 
 # Check composer install
 if [[ -z "$(which composer)" ]]
@@ -106,7 +102,7 @@ sed -i -e "s:{{PROJECT_SLUG}}:${PROJECT_SLUG}:g" wp-config.php
 sed -i -e "s:{{PROJECT_URL}}:${PROJECT_URL}:g" wp-config.php
 
 echo -e "--> Add salt keys files to wp-config.php\n"
-curl https://api.wordpress.org/secret-key/1.1/salt/ > wp-base-master/wp_salt_keys
+curl -s https://api.wordpress.org/secret-key/1.1/salt/ > wp-base-master/wp_salt_keys
 
 sed -i -e "/{{WP_SALT_KEYS}}/{
 	s/{{WP_SALT_KEYS}}//g
@@ -126,9 +122,18 @@ cp .env.example .env
 echo -e "--> Clean up install files"
 rm -r ./wp-base-master
 
-# Run composer
-echo -e "--> Run composer install"
+# Composer
+echo -e "--> Run composer"
 composer install
+
+# Yarn
+if [[ -z "$(which composer)" ]]
+then
+	echo -e "\n--> Can't find yarn."
+else
+  echo -e "--> Run yarn"
+  composer install
+fi
 
 # Initialize Git
 if [[ "${WITH_GIT}" == "y" ]]
