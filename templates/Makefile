@@ -18,8 +18,8 @@ IP_PRODUCTION = ''
 IP 						= ''
 USER 					= 'jackjoe'
 
-T_STAGING 	 	= '/var/www/staging.tenderwolf.com'
-T_PRODUCTION 	= '/var/www/tenderwolf.com'
+T_STAGING 	 	= '/var/www/'
+T_PRODUCTION 	= '/var/www/'
 
 .SILENT: ;               # no need for @
 .ONESHELL: ;             # recipes execute in same shell
@@ -109,62 +109,3 @@ analyse_app:
 	NODE_ENV=production ANALYSE=true node node_modules/webpack/bin/webpack.js \
 					--progress \
 					--colors
-
-####################
-
-# deploy_staging_files: _deploy_staging
-# deploy_staging: production _deploy_staging
-# _deploy_staging:
-# 	@ssh $(USER)@$(IP) '\
-# 					cd $(T_STAGING) ;\
-# 					rm -rf vendor ;\
-# 					sudo chmod -R 775 . ;\
-# 					'
-# 	@rsync \
-# 					-vrzc \
-# 					--delete \
-# 					--no-p \
-# 					--no-o \
-# 					--exclude-from=./.deployignore \
-# 					. \
-# 					$(USER)@$(IP):$(T_STAGING)
-# 	@ssh $(USER)@$(IP) '\
-# 					cd $(T_STAGING) ;\
-# 					rm -f .env ;\
-# 					cp .env.staging .env ;\
-# 					sed -i.bak -e "s/ASSET_VERSION=.*/ASSET_VERSION=$(GIT_SHA)/g" .env ;\
-# 					'
-# 	@make compose_staging
-# 	@make finish_staging
-# 	@make notify_staging
-#
-# compose_staging:
-# 	@ssh $(USER)@$(IP) '\
-# 					cd $(T_STAGING) ;\
-# 					mkdir -p storage/framework ;\
-# 					mkdir -p storage/framework/cache ;\
-# 					mkdir -p storage/framework/sessions ;\
-# 					mkdir -p storage/framework/views ;\
-# 					sudo chmod -R 775 public ;\
-# 					sudo chmod -R 777 storage ;\
-# 					sudo chown -R www-data:www-data storage ;\
-# 					sudo /bin/bash -c "rm -f storage/logs/*.log" ;\
-# 					rm -rf vendor ;\
-# 					composer install --no-dev --no-suggest --no-progress ;\
-# 					'
-#
-# finish_staging:
-# 	@ssh $(USER)@$(IP) '\
-# 					cd $(T_STAGING) ;\
-# 					php artisan clear-compiled ;\
-# 					php artisan config:clear ;\
-# 					php artisan cache:clear ;\
-# 					php artisan migrate ;\
-# 					php artisan db:seed ;\
-# 					php artisan opcache:clear; \
-# 					'
-#
-# notify_staging:
-# 	@curl -X POST \
-# 					--data-urlencode 'payload={"channel": "#deploy-bot", "username": "$(USER)", "text": "Tenderwolf deployed to staging", "icon_emoji": ":wolf:"}' \
-# 					$(SLACK_HOOK)
