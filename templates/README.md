@@ -6,8 +6,7 @@
 
 ```
 <VirtualHost 0.0.0.0:80>
-  ServerName {{PROJECT_SLUG}}.lcl
-  ServerAlias www.{{PROJECT_SLUG}}.lcl
+  ServerName {{PROJECT_URL}}
   DocumentRoot "/path/to/{{PROJECT_SLUG}}"
 </VirtualHost>
 ```
