@@ -16,10 +16,15 @@ function _help {
 cat <<EOF
   $*
   Usage:          ./install [options]
+
   Options:
-    -h  --help           Show this message
-    -s                   Project slug, all lowercase chars, no whitespace, e.g.: project-slug, project_slug [$PROJECT_SLUG]
-    -u                   Project url, including protocol [http://$PROJECT_SLUG.lcl]
+    -h            Show this message
+    -s            Set the project slug
+                  Valid slugs are lowercase, no whitespace
+                  Examples: foo-bar, foo_bar
+                  [default: $PROJECT_SLUG]
+    -u            Set the project url
+                  Should include protocol [default: http://$PROJECT_SLUG.lcl]
 
   Remote usage:
     bash <( curl -s https://raw.githubusercontent.com/jackjoe/wp-base/master/scripts/install  ) [-s 'project-x']
