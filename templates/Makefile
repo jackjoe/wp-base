@@ -29,6 +29,9 @@ Makefile: ;              # skip prerequisite discovery
 
 .PHONY: run restart app flow sass deploy production build test uglify yaml_lint
 
+help:
+	awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+
 sass: ## compile sass
 	echo "sass compile .."
 	node_modules/node-sass/bin/node-sass \
@@ -46,7 +49,7 @@ ifeq ($(OS), Darwin)
 	  -message "Sass Compiled"
 endif
 
-sasswatch: ## compile sass
+sasswatch: ## watch and compile sass
 	echo 'Watching sass...'
 	node_modules/node-sass/bin/node-sass \
 		-w $(SASS_FOLDER) \
@@ -61,7 +64,7 @@ ifeq ($(OS), Darwin)
 	  -message "Sass Compiled"
 endif
 
-app:
+app: ## compile the app javascript
 	node node_modules/webpack/bin/webpack.js \
 					--progress \
 					--colors
