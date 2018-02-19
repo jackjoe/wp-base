@@ -132,7 +132,7 @@ then
 	echo -e "\n--> Can't find yarn."
 else
   echo -e "--> Run yarn"
-  composer install
+  yarn
 fi
 
 # Initialize Git
