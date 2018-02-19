@@ -95,11 +95,11 @@ cp -Ri ./wp-base-master/templates/.[^.]* ./
 
 # Replace variables in the templates files
 echo -e "--> Update README with project details"
-sed -i -e "s:{{PROJECT_SLUG}}:${PROJECT_SLUG}:g" ./README.md
+sed -i '' -e "s:{{PROJECT_SLUG}}:${PROJECT_SLUG}:g" ./README.md
 
 echo -e "--> Configure variables in wp-config.php"
-sed -i -e "s:{{PROJECT_SLUG}}:${PROJECT_SLUG}:g" wp-config.php
-sed -i -e "s:{{PROJECT_URL}}:${PROJECT_URL}:g" wp-config.php
+sed -i '' -e "s:{{PROJECT_SLUG}}:${PROJECT_SLUG}:g" wp-config.php
+sed -i '' -e "s:{{PROJECT_URL}}:${PROJECT_URL}:g" wp-config.php
 
 echo -e "--> Add salt keys files to wp-config.php\n"
 curl -s https://api.wordpress.org/secret-key/1.1/salt/ > wp-base-master/wp_salt_keys
@@ -110,7 +110,7 @@ sed -i -e "/{{WP_SALT_KEYS}}/{
 }" wp-config.php
 
 echo -e "--> Configure variables in style.css"
-sed -i -e "s:{{PROJECT_SLUG}}:${PROJECT_SLUG}:g" ./wp-content/themes/PROJECT_SLUG/style.css
+sed -i '' -e "s:{{PROJECT_SLUG}}:${PROJECT_SLUG}:g" ./wp-content/themes/PROJECT_SLUG/style.css
 
 echo -e "--> Rename theme folder to ${PROJECT_SLUG}"
 mv ./wp-content/themes/PROJECT_SLUG ./wp-content/themes/${PROJECT_SLUG}
@@ -156,3 +156,4 @@ echo -e "   ${PROJECT_SLUG}-dev"
 echo -e "4. Import production DB in development & staging"
 echo -e "5. Add admin credentials to 1Password"
 echo -e "6. Add plugin: Advanced Custom Fields Pro"
+echo -e "\n**************************************************"
