@@ -33,7 +33,7 @@ exit 0
 }
 
 # parse opts
-OPTSPEC="s:g:"
+OPTSPEC=":hs:g:"
 while getopts "$OPTSPEC" FLAG; do
   case $FLAG in
     s)
@@ -45,8 +45,8 @@ while getopts "$OPTSPEC" FLAG; do
     h)
       _help
       ;;
-    \?) #unrecognized option - show help
-      printf \\n"Option -${BOLD}$OPTARG${OFF} not allowed."
+    *) #unrecognized option - show help
+      printf \\n"  Option -${BOLD}$OPTARG${OFF} not allowed.\\n"
       _help
       ;;
   esac
