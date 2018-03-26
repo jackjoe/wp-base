@@ -33,7 +33,7 @@ exit 0
 }
 
 # parse opts
-OPTSPEC=":hs:g:"
+OPTSPEC=":hs:g:u:"
 while getopts "$OPTSPEC" FLAG; do
   case $FLAG in
     s)
@@ -44,6 +44,9 @@ while getopts "$OPTSPEC" FLAG; do
       ;;
     h)
       _help
+      ;;
+    u)
+      PROJECT_URL=$OPTARG
       ;;
     *) #unrecognized option - show help
       printf \\n"  Option -${BOLD}$OPTARG${OFF} not allowed.\\n"
