@@ -27,7 +27,7 @@ cat <<EOF
                   Should include protocol [default: http://$PROJECT_SLUG.lcl]
 
   Remote usage:
-    bash <( curl -s https://raw.githubusercontent.com/jackjoe/wp-base/master/scripts/install  ) [-s 'project-x']
+    bash <( curl https://raw.githubusercontent.com/jackjoe/wp-base/master/scripts/install ) -s project_slug
 EOF
 exit 0
 }
