@@ -1,7 +1,7 @@
 {
   "private": true,
   "author": "Jack + Joe",
-  "name": "PROJECT_SLUG",
+  "name": "{{PROJECT_SLUG}}",
   "version": "0.0.1",
   "license": "UNLICENSED",
   "engines": {
