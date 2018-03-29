@@ -1,4 +1,4 @@
-PROJECT_NAME  = PROJECT_SLUG
+PROJECT_NAME  = {{PROJECT_SLUG}}
 SASS_FOLDER   = 'wp-content/themes/$(PROJECT_NAME)/sass'
 JS_FOLDER     = 'wp-content/themes/$(PROJECT_NAME)/javascript'
 STATIC_FOLDER = 'wp-content/themes/$(PROJECT_NAME)/static'
